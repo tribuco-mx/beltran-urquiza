@@ -8,6 +8,7 @@ use App\Mail\InvoiceProcessed;
 use App\Models\Invoice;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -106,7 +107,8 @@ class InvoiceResource extends Resource
                         $record->generateInvoice();
 
                         Mail::to($record->customer->email)->send(new InvoiceProcessed(invoice: $record));
-                    }),
+                    })
+                    ->after(callback: fn() => Notification::make()->success()->title('Invoice sent successfully')->send()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

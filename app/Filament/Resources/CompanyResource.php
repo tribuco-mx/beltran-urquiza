@@ -29,6 +29,9 @@ class CompanyResource extends Resource
                     ->label('Name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('tax_id')
+                    ->label('RTN')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->email()
@@ -38,6 +41,12 @@ class CompanyResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('address')
                     ->label('Address')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('city')
+                    ->label('City')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('state')
+                    ->label('State')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('logo')
                     ->label('Logo')
@@ -55,6 +64,9 @@ class CompanyResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Name'))
                     ->sortable(),
+                Tables\Columns\TextColumn::make('tax_id')
+                    ->label(__('RTN'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('Email'))
                     ->sortable(),
@@ -63,6 +75,12 @@ class CompanyResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address')
                     ->label(__('Address'))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('city')
+                    ->label(__('City'))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('state')
+                    ->label(__('State'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('logo')
                     ->label(__('Logo'))

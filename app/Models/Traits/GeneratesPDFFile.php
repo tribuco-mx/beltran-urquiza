@@ -13,13 +13,13 @@ trait GeneratesPDFFile
      */
     public function generateInvoice(): self
     {
-        if (! is_null($this->pdf_file)) {
+        /*if (! is_null($this->pdf_file)) {
             Storage::delete($this->pdf_file);
-        }
+        }*/
 
         $this->pdf_file = $this->transaction_ref . '_invoice.pdf';
         
-        Pdf::loadView(view: 'pdf.invoice', data: ['invoice' => $this])
+        Pdf::loadView(view: 'pdf.HN_invoice', data: ['invoice' => $this])
             ->setPaper('a4')
             ->save(filename: $this->pdf_file, disk: env('FILESYSTEM_DISK', 'local'));
 
@@ -36,6 +36,17 @@ trait GeneratesPDFFile
 
                 return Storage::url($value);
             }
+        );
+    }
+
+    protected function filename(): Attribute
+    {
+        $this->appends = array_merge($this->appends, ['filename']);
+
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                return $attributes['transaction_ref'] . '_invoice.pdf';
+            },
         );
     }
 }

@@ -48,25 +48,25 @@ class InvoiceImporter extends Importer
             ImportColumn::make('quantity')
                 ->label('Quantity')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->quantity = $data['quantity'];
+                    $record->quantity = intval($data['quantity']);
                 }),
 
             ImportColumn::make('amount_without_gct')
                 ->label('Amount w/out GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_without_gct = $data['amount_without_gct'];
+                    $record->amount_without_gct = floatval($data['amount_without_gct']);
                 }),
 
             ImportColumn::make('gct')
                 ->label('GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->gct = $data['gct'];
+                    $record->gct = floatval($data['gct']);
                 }),
 
             ImportColumn::make('amount_with_gct')
                 ->label('Amount w/ GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_with_gct = $data['amount_with_gct'];
+                    $record->amount_with_gct = floatval($data['amount_with_gct']);
                 }),
 
             ImportColumn::make('currency')
@@ -149,6 +149,8 @@ class InvoiceImporter extends Importer
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
                         ->label('Name'),
+                    Forms\Components\TextInput::make('tax_id')
+                        ->label('RTN'),
                     Forms\Components\TextInput::make('email')
                         ->label('Email')
                         ->email(),
@@ -156,6 +158,10 @@ class InvoiceImporter extends Importer
                         ->label('Phone'),
                     Forms\Components\TextInput::make('address')
                         ->label('Address'),
+                    Forms\Components\TextInput::make('city')
+                        ->label('City'),
+                    Forms\Components\TextInput::make('state')
+                        ->label('State'),
                     Forms\Components\FileUpload::make('logo')
                         ->label('Logo'),
                     Forms\Components\TextInput::make('website')
