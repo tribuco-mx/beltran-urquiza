@@ -29,7 +29,7 @@ class InvoiceProcessed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invoice Processed',
+            subject: 'Factura #'. $this->invoice->id,
         );
     }
 
