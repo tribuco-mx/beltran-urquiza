@@ -21,46 +21,74 @@ class CompanyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function formSchema(): array        
+    {
+        return [
+            Forms\Components\Section::make(__('Información de la empresa'))
+                ->schema([
+                    Forms\Components\Split::make([
+                        Forms\Components\FileUpload::make('logo')
+                            ->label('Logo')
+                            ->avatar()
+                            ->image(),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('tax_id')
+                                    ->label('RTN')
+                                    ->maxLength(255),
+                            ]),
+                    ])
+                    ->from('lg')
+                    ->columnSpanFull(), 
+                ]),
+            Forms\Components\Split::make([
+                Forms\Components\Section::make(__('Medios de contacto'))
+                    ->schema([
+                        Forms\Components\TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('phone')
+                            ->label('Phone')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('website')
+                            ->label('Website')
+                            ->maxLength(255),
+                    ]),
+                Forms\Components\Section::make(__('Dirección'))
+                    ->schema([
+                        Forms\Components\TextInput::make('address')
+                            ->label('Address')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('city')
+                            ->label('City')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('state')
+                            ->label('State')
+                            ->maxLength(255),
+                    ]),
+            ])
+            ->from('lg')
+            ->columnSpanFull(),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tax_id')
-                    ->label('RTN')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Phone')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->label('Address')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('city')
-                    ->label('City')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('state')
-                    ->label('State')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('logo')
-                    ->label('Logo')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('website')
-                    ->label('Website')
-                    ->maxLength(255),
-            ]);
+            ->schema(static::formSchema());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('logo')
+                    ->label(__('Logo')),
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Name'))
                     ->sortable(),
@@ -81,9 +109,6 @@ class CompanyResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('state')
                     ->label(__('State'))
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('logo')
-                    ->label(__('Logo'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('website')
                     ->label(__('Website'))

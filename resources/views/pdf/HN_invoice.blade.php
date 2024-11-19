@@ -8,6 +8,13 @@
 <body style="display: flex; justify-content: center; font-family: Arial, sans-serif;">
 
 <div style="width: 100%; background-color: #fff; padding: 20px;">
+    @if(! is_null($invoice->company?->logo))
+        <img src="{{ 'data:image/png;base64,' . base64_encode(Storage::get($invoice->company?->logo)) }}" 
+            alt="{{ $invoice->company->name }}" 
+            style="height: 50px; width: auto;"
+        />
+    @endif
+
     <p style="margin-top: 10px; font-size: 10pt; font-weight: bold;">{{ $invoice->company->name }}</p>
 
     <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
@@ -144,7 +151,7 @@
         </tr>
     </table>
 
-    <table style="width: 25%; margin-top: 20px; border-collapse: collapse;">
+    <table style="width: 25%; margin-top: 10px; border-collapse: collapse;">
         <tr>
             <td style="color: black; font-size: 8pt;">ORIGINAL:</td>
             <td style="color: black; font-size: 8pt;">CLIENTE</td>

@@ -28,31 +28,49 @@ class InvoiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DatePicker::make('transaction_date')
-                    ->required(),
-                Forms\Components\TextInput::make('transaction_ref')
-                    ->required(),
-                Forms\Components\TextInput::make('order_id')
-                    ->required(),
-                Forms\Components\TextInput::make('service_purchased')
-                    ->required(),
-                Forms\Components\TextInput::make('quantity')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('amount_without_gct')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('gct')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('amount_with_gct')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('currency')
-                    ->required(),
+                Forms\Components\Section::make(__('Información de la factura'))
+                    ->schema([
+                        Forms\Components\TextInput::make('order_id')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\Select::make('customer_id')
+                            ->required()
+                            ->preload()
+                            ->searchable()
+                            ->relationship('customer', 'name'),
+                        Forms\Components\DatePicker::make('transaction_date')
+                            ->required(),
+                        Forms\Components\TextInput::make('transaction_ref')
+                            ->required(),
+                        Forms\Components\Select::make('company_id')
+                            ->required()
+                            ->preload()
+                            ->searchable()
+                            ->relationship('company', 'name')
+                            ->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Detalles de la factura')
+                            ->schema([
+                                Forms\Components\TextInput::make('service_purchased')
+                                    ->required(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('amount_without_gct')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('gct')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('amount_with_gct')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('currency')
+                                    ->required(),
+                            ])
+                            ->columns(6)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(3),
             ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Filament\Resources\CompanyResource;
 use App\Mail\InvoiceProcessed;
 use App\Models\Company;
 use App\Models\Customer;
@@ -146,27 +147,7 @@ class InvoiceImporter extends Importer
                 ->options(fn() => Company::all()->pluck('name', 'id'))
                 ->searchable()
                 ->dehydrated(fn (Company $company): array => ['id' => $company->id, 'name' => $company->name])
-                ->createOptionForm([
-                    Forms\Components\TextInput::make('name')
-                        ->label('Name'),
-                    Forms\Components\TextInput::make('tax_id')
-                        ->label('RTN'),
-                    Forms\Components\TextInput::make('email')
-                        ->label('Email')
-                        ->email(),
-                    Forms\Components\TextInput::make('phone')
-                        ->label('Phone'),
-                    Forms\Components\TextInput::make('address')
-                        ->label('Address'),
-                    Forms\Components\TextInput::make('city')
-                        ->label('City'),
-                    Forms\Components\TextInput::make('state')
-                        ->label('State'),
-                    Forms\Components\FileUpload::make('logo')
-                        ->label('Logo'),
-                    Forms\Components\TextInput::make('website')
-                        ->label('Website'),
-                ])
+                ->createOptionForm(CompanyResource::formSchema())
                 ->createOptionUsing(fn (array $data): Company => Company::create($data))
                 ->required(),
         ];
