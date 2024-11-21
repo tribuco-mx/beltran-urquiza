@@ -78,8 +78,11 @@ class InvoiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID Factura')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->date()
