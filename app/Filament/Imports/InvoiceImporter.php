@@ -55,19 +55,19 @@ class InvoiceImporter extends Importer
             ImportColumn::make('amount_without_gct')
                 ->label('Amount w/out GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_without_gct = floatval($data['amount_without_gct']);
+                    $record->amount_without_gct = static::castToFloat($data['amount_without_gct']);
                 }),
 
             ImportColumn::make('gct')
                 ->label('GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->gct = floatval($data['gct']);
+                    $record->gct = static::castToFloat($data['gct']);
                 }),
 
             ImportColumn::make('amount_with_gct')
                 ->label('Amount w/ GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_with_gct = floatval($data['amount_with_gct']);
+                    $record->amount_with_gct = static::castToFloat($data['amount_with_gct']);
                 }),
 
             ImportColumn::make('currency')
@@ -151,6 +151,16 @@ class InvoiceImporter extends Importer
                 ->createOptionUsing(fn (array $data): Company => Company::create($data))
                 ->required(),
         ];
+    }
+
+    /**
+     * Cast a numeric string to float with 3 decimal palces
+     * 
+     * eg: 1,000.00 => 1000.00
+     */
+    protected static function castToFloat(mixed $val): float
+    {
+        return (float) filter_var($val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);       
     }
 
     public function resolveRecord(): ?Invoice
