@@ -125,7 +125,7 @@ class InvoiceResource extends Resource
                     ->label('Send email')
                     ->icon('heroicon-o-paper-airplane')
                     ->action(function (Invoice $record) {
-                        $record->generateInvoice();
+                        $record->generateInvoice()->save();
 
                         Mail::to($record->customer->email)->send(new InvoiceProcessed(invoice: $record));
                     })
