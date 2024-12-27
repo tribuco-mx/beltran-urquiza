@@ -37,19 +37,18 @@
         <tr>
             <td style="width: 50%; vertical-align: top;">
                 <p style="color: black; font-size: 8pt;">R.T.N: {{ $invoice->company->tax_id }}</p>
-                <p style="color: black; font-size: 8pt;">[Dirección]: {{ $invoice->company->address }}</p>
-                <p style="color: black; font-size: 8pt;">[Ciudad]: {{ $invoice->company->city }} {{ $invoice->company->state }}</p>
-                <p style="color: black; font-size: 8pt;">[Número de teléfono]: {{ $invoice->company->phone }}</p>
+                <p style="color: black; font-size: 8pt;">{{ $invoice->company->address }} {{ $invoice->company->city }} {{ $invoice->company->state }}</p>
+                <p style="color: black; font-size: 8pt;">Número de teléfono: {{ $invoice->company->phone }}</p>
                 <p style="color: black; font-size: 8pt;">Correo electrónico: {{ $invoice->company->email }}</p>
-                <p style="color: black; font-size: 8pt;">CAI:</p>
-                <p style="color: black; font-size: 8pt;">Rango autorizado:</p>
-                <p style="color: black; font-size: 8pt;">Fecha límite de emisión:</p>
+                <p style="color: black; font-size: 8pt;">CAI: {{ $invoice->order_id }}</p>
+                <p style="color: black; font-size: 8pt;">Rango autorizado: {{ env('AUTHORIZED_RANGE', '000-001-01-00000001 / 000-001-01-00010000') }}</p>
+                <p style="color: black; font-size: 8pt;">Fecha límite de emisión: {{ env('EMISSION_LIMIT_DATE', '10/12/2025') }} </p>
             </td>
             <td style="width: 50%; vertical-align: top;">
                 <p style="color: black; font-weight: bold; font-size: 8pt;">FECHA DE FACTURA:</p>
                 <p style="color: black; font-size: 8pt;">{{ \Carbon\Carbon::parse($invoice->transaction_date)->format('d/m/Y') }}</p>
                 <p style="color: black; font-weight: bold; font-size: 8pt;">Nº DE FACTURA</p>
-                <p style="color: black; font-size: 8pt;">{{ $invoice->id }}</p>
+                <p style="color: black; font-size: 8pt;">{{ $invoice->formattedInvoiceNumber }}{{-- $invoice->id--}}</p>
             </td>
         </tr>
     </table>

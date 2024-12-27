@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\GeneratesPDFFile;
-use Attribute;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
@@ -39,5 +39,12 @@ class Invoice extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    protected function formattedInvoiceNumber(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => preg_replace('/(\d{3})(\d{3})(\d{2})(\d{8})/', '$1-$2-$3-$4', sprintf('00000101%08d', $this->id)),
+        );
     }
 }

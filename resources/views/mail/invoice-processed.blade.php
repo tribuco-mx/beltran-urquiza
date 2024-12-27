@@ -85,25 +85,22 @@ SIN VALIDEZ OFICIAL
 <td><p class="s1">R.T.N: {{ $invoice->company->tax_id }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">[Dirección]: {{ $invoice->company->address }}</p></td>
+<td><p class="s1">{{ $invoice->company->address }} {{ $invoice->company->city }} {{ $invoice->company->state }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">[Ciudad]: {{ $invoice->company->city }} {{ $invoice->company->state }}</p></td>
-</tr>
-<tr>
-<td><p class="s1">[Número de teléfono]: {{ $invoice->company->phone }}</p></td>
+<td><p class="s1">Número de teléfono: {{ $invoice->company->phone }}</p></td>
 </tr>
 <tr>
 <td><p class="s1">Correo electrónico: {{ $invoice->company->email }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">CAI:</p></td>
+<td><p class="s1">CAI: {{ $invoice->order_id }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">Rango autorizado:</p></td>
+<td><p class="s1">Rango autorizado: {{ env('AUTHORIZED_RANGE', '000-001-01-00000001 / 000-001-01-00010000') }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">Fecha límite de emisión:</p></td>
+<td><p class="s1">Fecha límite de emisión:  {{ env('EMISSION_LIMIT_DATE', '10/12/2025') }}</p></td>
 </tr>
 </table>
 
@@ -123,7 +120,7 @@ SIN VALIDEZ OFICIAL
 {{--<td><p class="s1">{{ $invoice->id }}</p></td>--}}
 </tr>
 <tr>
-<td><p class="s1">{{ $invoice->id }}</p></td>
+<td><p class="s1">{{ $invoice->formattedInvoiceNumber }}</p></td>
 </tr>
 </table>
 </div>
