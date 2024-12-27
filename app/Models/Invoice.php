@@ -25,6 +25,20 @@ class Invoice extends Model
         'pdf_file',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function($model) {
+            /** @var int $limit */
+            $limit = (int) env('INVOICE_LIMIT', 10000);
+
+            if (Invoice::latest()->first()->id >= $limit) {
+                throw new \Exception("Invoice limit of {$limit} reached");
+            }
+        });
+    }
+
     /**
      * Define the relationship with the Company model.
      */
