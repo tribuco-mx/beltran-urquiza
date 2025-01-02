@@ -41,6 +41,9 @@ class ExportInvoicesJob implements ShouldQueue
             $csvFilename = tempnam(sys_get_temp_dir(), 'invoices_') . '.csv';
             $csvHandle = fopen($csvFilename, 'w');
 
+            // Write the UTF-8 BOM:
+            fputs($csvHandle, "\xEF\xBB\xBF");
+
             // Write the CSV headers
             fputcsv($csvHandle, [
                 'Invoice ID',
@@ -71,7 +74,7 @@ class ExportInvoicesJob implements ShouldQueue
                 ->with('customer') // Eager load the customer relationship
                 ->chunk(100, function ($invoices) use ($zip, $csvHandle) {
                     foreach ($invoices as $invoice) {
-                        
+
                         // Write CSV row
                         $data = [
                             $invoice->id,
@@ -103,7 +106,7 @@ class ExportInvoicesJob implements ShouldQueue
 
                         // Add the PDF file to the ZIP archive
                         $zip->addFromString(
-                            __('Factura #:id', ['id' => $invoice->id]) . '.pdf', 
+                            __('Factura #:id', ['id' => $invoice->id]) . '.pdf',
                             $contents
                         );
                     }
