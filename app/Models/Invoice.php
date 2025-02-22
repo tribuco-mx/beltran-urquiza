@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use GeneratesPDFFile;
-    
+
     protected $fillable = [
         'customer_id',
         'company_id',
@@ -34,10 +34,9 @@ class Invoice extends Model
             /** @var int $limit */
             $limit = (int) env('INVOICE_LIMIT', 10000);
 
-            if (Invoice::latest()->first()->id >= $limit) {
+            if ( Invoice::query()->count() >= 1 && Invoice::latest()->first()->id >= $limit) {
                 throw new \Exception("Invoice limit of {$limit} reached");
             }
-
             if (now() > Carbon::parse(env('EMISSION_LIMIT_DATE', '10/12/2025'))) {
                 throw new \Exception("Emission limit date reached");
             }
