@@ -25,55 +25,55 @@ class InvoiceImporter extends Importer
             ImportColumn::make('transaction_date')
                 ->label('Transaction Date')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->transaction_date = $data['transaction_date'];
+                    $record->transaction_date = $data['transaction_date'] ?? now();
                 }),
 
             ImportColumn::make('transaction_ref')
                 ->label('Transaction Ref. #')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->transaction_ref = $data['transaction_ref'];
+                    $record->transaction_ref = $data['transaction_ref'] ?? '';
                 }),
 
             ImportColumn::make('order_id')
                 ->label('Order ID')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->order_id = $data['order_id'];
+                    $record->order_id = $data['order_id'] ?? '';
                 }),
 
             ImportColumn::make('service_purchased')
                 ->label('Service(s) Purchased')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->service_purchased = $data['service_purchased'];
+                    $record->service_purchased = $data['service_purchased'] ?? '';
                 }),
 
             ImportColumn::make('quantity')
                 ->label('Quantity')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->quantity = intval($data['quantity']);
+                    $record->quantity = intval($data['quantity'] ?? 0);
                 }),
 
             ImportColumn::make('amount_without_gct')
                 ->label('Amount w/out GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_without_gct = static::castToFloat($data['amount_without_gct']);
+                    $record->amount_without_gct = static::castToFloat($data['amount_without_gct'] ?? 0);
                 }),
 
             ImportColumn::make('gct')
                 ->label('GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->gct = static::castToFloat($data['gct']);
+                    $record->gct = static::castToFloat($data['gct'] ?? 0);
                 }),
 
             ImportColumn::make('amount_with_gct')
                 ->label('Amount w/ GCT')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->amount_with_gct = static::castToFloat($data['amount_with_gct']);
+                    $record->amount_with_gct = static::castToFloat($data['amount_with_gct'] ?? 0);
                 }),
 
             ImportColumn::make('currency')
                 ->label('Currency')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->currency = $data['currency'];
+                    $record->currency = $data['currency'] ?? '';
                 }),
 
             // Customer-related fields (not directly mapped to Invoice)
@@ -155,16 +155,16 @@ class InvoiceImporter extends Importer
 
     /**
      * Cast a numeric string to float with 3 decimal palces
-     * 
+     *
      * eg: 1,000.00 => 1000.00
      */
     protected static function castToFloat(mixed $val): float
     {
-        return (float) filter_var($val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);       
+        return (float) filter_var($val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 
     public function resolveRecord(): ?Invoice
-    {        
+    {
         return Invoice::firstOrNew([
              // Update existing records, matching them by `$this->data['column_name']`
              'order_id' => $this->data['order_id'],
@@ -195,7 +195,7 @@ class InvoiceImporter extends Importer
         $invoice->generateInvoice()->save();
 
         Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
-        
+
         return;
     }
 
