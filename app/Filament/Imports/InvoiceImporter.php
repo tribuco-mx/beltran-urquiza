@@ -194,7 +194,7 @@ class InvoiceImporter extends Importer
 
         $invoice->generateInvoice()->save();
 
-        // Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
+        Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
 
         return;
     }
