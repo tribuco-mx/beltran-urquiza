@@ -25,8 +25,8 @@
         </div>
     @endif
     @if(! is_null($invoice->company?->logo))
-        <img src="{{ 'data:image/png;base64,' . base64_encode(Storage::get($invoice->company?->logo)) }}" 
-            alt="{{ $invoice->company->name }}" 
+        <img src="{{ 'data:image/png;base64,' . base64_encode(Storage::get($invoice->company?->logo)) }}"
+            alt="{{ $invoice->company->name }}"
             style="height: 50px; width: auto;"
         />
     @endif
@@ -84,7 +84,7 @@
         <tbody>
             <tr style="height: 150px;">
                 <td style="height: 150px; text-align: center; border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->quantity }}</td>
-                <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->service_purchased }}</td>
+                <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->service_purchased . ' - ' .  $invoice->transaction_ref }}</td>
                 <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}</td>
                 <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">-</td>
                 <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
@@ -133,7 +133,7 @@
             <td style="text-align: right; font-weight: bold; color: black; font-size: 8pt;">Total a pagar L.</td>
             <td style="background-color: #F1F1F1; border: 2px solid #000; text-align: right; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_with_gct, 2) }}</td>
         </tr>
-    </table>    
+    </table>
 
     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
         <tr>
@@ -142,7 +142,7 @@
         <tr>
             <td>
                 <p style="color: black; font-weight: bold; font-size: 8pt;">
-                    {{ ucfirst(\Illuminate\Support\Number::spell((int) $invoice->amount_with_gct, 'es') . ' Lempiras con ' . number_format(($invoice->amount_with_gct - (int) $invoice->amount_with_gct) * 100, 0) . '/100') }}
+                    {{ ucfirst(\Illuminate\Support\Number::spell((int) $invoice->amount_with_gct, 'es') . ' Lempiras con ' . sprintf('%02d'  ,number_format(($invoice->amount_with_gct - (int) $invoice->amount_with_gct) * 100, 0)) . '/100') }}
                 </p>
             </td>
         </tr>
