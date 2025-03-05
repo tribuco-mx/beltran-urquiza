@@ -14,7 +14,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-ini_set('max_execution_time', 500);
+ini_set('max_execution_time', 1000);
 
 class InvoiceImporter extends Importer
 {
