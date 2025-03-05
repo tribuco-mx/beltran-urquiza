@@ -14,11 +14,11 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+ini_set('max_execution_time', 1000);
 
 class InvoiceImporter extends Importer
 {
     protected static ?string $model = Invoice::class;
-
 
 
     public static function getColumns(): array
@@ -149,9 +149,9 @@ class InvoiceImporter extends Importer
                 ->label('Company')
                 ->options(fn() => Company::all()->pluck('name', 'id'))
                 ->searchable()
-                ->dehydrated(fn (Company $company): array => ['id' => $company->id, 'name' => $company->name])
+                ->dehydrated(fn(Company $company): array => ['id' => $company->id, 'name' => $company->name])
                 ->createOptionForm(CompanyResource::formSchema())
-                ->createOptionUsing(fn (array $data): Company => Company::create($data))
+                ->createOptionUsing(fn(array $data): Company => Company::create($data))
                 ->required(),
         ];
     }
@@ -163,14 +163,14 @@ class InvoiceImporter extends Importer
      */
     protected static function castToFloat(mixed $val): float
     {
-        return (float) filter_var($val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        return (float)filter_var($val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 
     public function resolveRecord(): ?Invoice
     {
         return Invoice::firstOrNew([
-             // Update existing records, matching them by `$this->data['column_name']`
-             'order_id' => $this->data['order_id'],
+            // Update existing records, matching them by `$this->data['column_name']`
+            'order_id' => $this->data['order_id'],
         ]);
     }
 
@@ -195,13 +195,20 @@ class InvoiceImporter extends Importer
             return;
         }
 
-        $invoice->generateInvoice()->save();
+        try {
+            $invoice->generateInvoice()->save();
+        } catch (\Exception $exception) {
+            Log::error('Failed to generate invoice for invoice ID ' . $invoice->id, ['exception' => $exception]);
+        }
 
-//        try {
-//            Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
-//        } catch (\Exception $e) {
-//            Log::error('Failed to send invoice email for invoice ID ' . $invoice->id, ['exception' => $e]);
-//        }
+//        Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
+
+
+        try {
+            Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
+        } catch (\Exception $e) {
+            Log::error('Failed to send invoice email for invoice ID ' . $invoice->id, ['exception' => $e]);
+        }
         return;
     }
 
