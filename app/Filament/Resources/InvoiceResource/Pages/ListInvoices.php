@@ -19,7 +19,6 @@ class ListInvoices extends ListRecords
         return [
             Actions\ImportAction::make()
                 ->importer(importer: InvoiceImporter::class)
-                ->chunkSize(10)
                 ->headerOffset(0),
             Actions\CreateAction::make(),
             Actions\Action::make('export_invoices')
