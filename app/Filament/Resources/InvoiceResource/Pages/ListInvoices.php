@@ -19,7 +19,7 @@ class ListInvoices extends ListRecords
         return [
             Actions\ImportAction::make()
                 ->importer(importer: InvoiceImporter::class)
-                ->headerOffset(0),
+                ->headerOffset(4),
             Actions\CreateAction::make(),
             Actions\Action::make('export_invoices')
                 ->label('Export Invoices')

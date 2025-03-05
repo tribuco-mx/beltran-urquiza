@@ -37,10 +37,10 @@ class InvoiceImporter extends Importer
                     $record->transaction_ref = $data['transaction_ref'] ?? '';
                 }),
 
-            ImportColumn::make('order_id')
-                ->label('Order ID')
+            ImportColumn::make('tax_invoice')
+                ->label('Tax Invoice #')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->order_id = $data['order_id'] ?? '';
+                    $record->order_id = $data['tax_invoice'] ?? '';
                 }),
 
             ImportColumn::make('service_purchased')
@@ -110,8 +110,8 @@ class InvoiceImporter extends Importer
                     return;
                 }),
 
-            ImportColumn::make('payment_method')
-                ->label('Payment Method')
+            ImportColumn::make('method_of_online_payment')
+                ->label('Method of Online Payment')
                 ->fillRecordUsing(function () {
                     return; // No mapping to Invoice
                 }),
@@ -170,7 +170,7 @@ class InvoiceImporter extends Importer
     {
         return Invoice::firstOrNew([
             // Update existing records, matching them by `$this->data['column_name']`
-            'order_id' => $this->data['order_id'],
+            'order_id' => $this->data['tax_invoice'],
         ]);
     }
 
@@ -235,7 +235,7 @@ class InvoiceImporter extends Importer
                 'tax_id' => $data['tax_id'],
                 'billing_address' => $data['billing_address'],
                 'province' => $data['province'],
-                'payment_method' => $data['payment_method'],
+                'payment_method' => $data['method_of_online_payment'],
                 'cardholder' => $data['cardholder'],
                 'card_type' => $data['card_type'],
                 'card_last4' => $data['last_4_digits'],
