@@ -14,9 +14,13 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Mail;
 
+ini_set('max_execution_time', 500);
+
 class InvoiceImporter extends Importer
 {
     protected static ?string $model = Invoice::class;
+
+
 
     public static function getColumns(): array
     {
