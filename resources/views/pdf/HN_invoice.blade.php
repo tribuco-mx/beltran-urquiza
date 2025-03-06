@@ -8,22 +8,22 @@
 <body style="display: flex; justify-content: center; font-family: Arial, sans-serif;">
 
 <div style="width: 100%; background-color: #fff; padding: 20px;">
-    @if(env('APP_ENV') !== 'production')
-        <div style="
-            position: fixed;
-            top: 45%;
-            width: 100%;
-            text-align: center;
-            opacity: .6;
-            color: red;
-            font-size: 72px;
-            transform: rotate(10deg);
-            transform-origin: 50% 50%;
-            z-index: 1000;
-        ">
-            SIN VALIDEZ OFICIAL
-        </div>
-    @endif
+{{--    @if(env('APP_ENV') !== 'production')--}}
+{{--        <div style="--}}
+{{--            position: fixed;--}}
+{{--            top: 45%;--}}
+{{--            width: 100%;--}}
+{{--            text-align: center;--}}
+{{--            opacity: .6;--}}
+{{--            color: red;--}}
+{{--            font-size: 72px;--}}
+{{--            transform: rotate(10deg);--}}
+{{--            transform-origin: 50% 50%;--}}
+{{--            z-index: 1000;--}}
+{{--        ">--}}
+{{--            SIN VALIDEZ OFICIAL--}}
+{{--        </div>--}}
+{{--    @endif--}}
     @if(! is_null($invoice->company?->logo))
         <img src="{{ 'data:image/png;base64,' . base64_encode(Storage::get($invoice->company?->logo)) }}"
             alt="{{ $invoice->company->name }}"

@@ -61,22 +61,22 @@ padding: 5px;
 }
 </style>
 <div class="invoice-container">
-@if(env('APP_ENV') !== 'production')
-<div style="
-position: fixed;
-top: 45%;
-width: 100%;
-text-align: center;
-opacity: .6;
-color: red;
-font-size: 72px;
-transform: rotate(10deg);
-left: 0%;
-z-index: 1000;
-">
-SIN VALIDEZ OFICIAL
-</div>
-@endif
+{{--@if(env('APP_ENV') !== 'production')--}}
+{{--<div style="--}}
+{{--position: fixed;--}}
+{{--top: 45%;--}}
+{{--width: 100%;--}}
+{{--text-align: center;--}}
+{{--opacity: .6;--}}
+{{--color: red;--}}
+{{--font-size: 72px;--}}
+{{--transform: rotate(10deg);--}}
+{{--left: 0%;--}}
+{{--z-index: 1000;--}}
+{{--">--}}
+{{--SIN VALIDEZ OFICIAL--}}
+{{--</div>--}}
+{{--@endif--}}
 <p style="margin-top: 10px; font-size: 10pt; font-weight: bold;">{{ $invoice->company->name }}</p>
 
 <div style="align-items: flex-start;" class="flex-container">
