@@ -9,6 +9,8 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
     require $maintenance;
 }
 
+ini_set('memory_limit', '500M');
+
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
