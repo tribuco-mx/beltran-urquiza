@@ -89,6 +89,7 @@ class ExportInvoicesJob implements ShouldQueue
                 ->whereBetween('transaction_date', [$this->from, $this->to])
                 ->with('customer') // Eager load the customer relationship
                 ->chunk(100, function ($invoices) use ($zip, $csvHandle) {
+                    $index = 0;
                     foreach ($invoices as $invoice) {
 
                         // Write CSV row
@@ -118,7 +119,7 @@ class ExportInvoicesJob implements ShouldQueue
 //                        ];
 
                         $dataWithoutGCT = [
-                            $invoice->id,
+                            $index,
                             'Diario',
                             $invoice->transaction_date,
                             $invoice->formattedInvoiceNumber,
@@ -164,7 +165,7 @@ class ExportInvoicesJob implements ShouldQueue
 //                        ];
 
                         $dataGCTOnly = [
-                            $invoice->id,
+                            $index,
                             'Diario',
                             $invoice->transaction_date,
                             $invoice->formattedInvoiceNumber,
@@ -209,7 +210,7 @@ class ExportInvoicesJob implements ShouldQueue
 //                        ];
 
                         $dataWithGCT = [
-                            $invoice->id,
+                            $index,
                             'Diario',
                             $invoice->transaction_date,
                             $invoice->formattedInvoiceNumber,
@@ -227,6 +228,8 @@ class ExportInvoicesJob implements ShouldQueue
                         ];
 
                         fputcsv($csvHandle, $dataWithGCT);
+
+                        $index++;
 
                         // Read the PDF content from storage
                         $contents = Storage::read($invoice->pdf_file);
