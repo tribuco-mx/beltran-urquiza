@@ -80,6 +80,7 @@ class ExportInvoicesJob implements ShouldQueue
                         $dataWithoutGCT = [
                             $invoice->id,
                             $invoice->customer->name,
+                            'ref',
                             $invoice->transaction_date,
                             $invoice->transaction_ref,
                             $invoice->order_id,
@@ -105,6 +106,7 @@ class ExportInvoicesJob implements ShouldQueue
                         $dataGCTOnly = [
                             $invoice->id,
                             $invoice->customer->name,
+                            'ref',
                             $invoice->transaction_date,
                             $invoice->transaction_ref,
                             $invoice->order_id,
