@@ -48,6 +48,7 @@ class ExportInvoicesJob implements ShouldQueue
             fputcsv($csvHandle, [
                 'Invoice ID',
                 'Customer Name',
+                'Reference',
                 'Transaction Date',
                 'Transaction Ref',
                 'Order ID',
@@ -76,7 +77,7 @@ class ExportInvoicesJob implements ShouldQueue
                     foreach ($invoices as $invoice) {
 
                         // Write CSV row
-                        $data = [
+                        $dataWithoutGCT = [
                             $invoice->id,
                             $invoice->customer->name,
                             $invoice->transaction_date,
@@ -85,7 +86,58 @@ class ExportInvoicesJob implements ShouldQueue
                             $invoice->service_purchased,
                             $invoice->quantity,
                             $invoice->amount_without_gct,
+                            0,
+                            0,
+                            $invoice->currency,
+                            $invoice->customer->email,
+                            $invoice->customer->tax_id,
+                            $invoice->customer->billing_address,
+                            $invoice->customer->province,
+                            $invoice->customer->payment_method,
+                            $invoice->customer->cardholder,
+                            $invoice->customer->card_type,
+                            $invoice->customer->card_last4,
+                            $invoice->customer->card_exp_date,
+                        ];
+
+                        fputcsv($csvHandle, $dataWithoutGCT);
+
+                        $dataGCTOnly = [
+                            $invoice->id,
+                            $invoice->customer->name,
+                            $invoice->transaction_date,
+                            $invoice->transaction_ref,
+                            $invoice->order_id,
+                            $invoice->service_purchased,
+                            $invoice->quantity,
+                            0,
                             $invoice->gct,
+                            0,
+                            $invoice->currency,
+                            $invoice->customer->email,
+                            $invoice->customer->tax_id,
+                            $invoice->customer->billing_address,
+                            $invoice->customer->province,
+                            $invoice->customer->payment_method,
+                            $invoice->customer->cardholder,
+                            $invoice->customer->card_type,
+                            $invoice->customer->card_last4,
+                            $invoice->customer->card_exp_date,
+                        ];
+
+                        fputcsv($csvHandle, $dataGCTOnly);
+
+                        $dataWithGCT = [
+                            $invoice->id,
+                            $invoice->customer->name,
+                            'ref',
+                            $invoice->transaction_date,
+                            $invoice->transaction_ref,
+                            $invoice->order_id,
+                            $invoice->service_purchased,
+                            $invoice->quantity,
+                            0,
+                            0,
                             $invoice->amount_with_gct,
                             $invoice->currency,
                             $invoice->customer->email,
@@ -99,7 +151,7 @@ class ExportInvoicesJob implements ShouldQueue
                             $invoice->customer->card_exp_date,
                         ];
 
-                        fputcsv($csvHandle, $data);
+                        fputcsv($csvHandle, $dataWithGCT);
 
                         // Read the PDF content from storage
                         $contents = Storage::read($invoice->pdf_file);
