@@ -89,7 +89,7 @@ class ExportInvoicesJob implements ShouldQueue
                 ->whereBetween('transaction_date', [$this->from, $this->to])
                 ->with('customer') // Eager load the customer relationship
                 ->chunk(100, function ($invoices) use ($zip, $csvHandle) {
-                    $index = 0;
+                    $index = 1;
                     foreach ($invoices as $invoice) {
 
                         // Write CSV row
