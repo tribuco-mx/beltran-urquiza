@@ -48,7 +48,7 @@ class ExportInvoicesJob implements ShouldQueue
             fputcsv($csvHandle, [
                 'Invoice ID',
                 'Customer Name',
-                'Reference',
+                'Concept',
                 'Transaction Date',
                 'Transaction Ref',
                 'Order ID',
@@ -80,7 +80,7 @@ class ExportInvoicesJob implements ShouldQueue
                         $dataWithoutGCT = [
                             $invoice->id,
                             $invoice->customer->name,
-                            'ref',
+                            $invoice->order_id . ' - ' . $invoice->service_purchased,
                             $invoice->transaction_date,
                             $invoice->transaction_ref,
                             $invoice->order_id,
@@ -106,7 +106,7 @@ class ExportInvoicesJob implements ShouldQueue
                         $dataGCTOnly = [
                             $invoice->id,
                             $invoice->customer->name,
-                            'ref',
+                            $invoice->order_id . ' - ' . $invoice->service_purchased,
                             $invoice->transaction_date,
                             $invoice->transaction_ref,
                             $invoice->order_id,
@@ -132,7 +132,7 @@ class ExportInvoicesJob implements ShouldQueue
                         $dataWithGCT = [
                             $invoice->id,
                             $invoice->customer->name,
-                            'ref',
+                            $invoice->order_id . ' - ' . $invoice->service_purchased,
                             $invoice->transaction_date,
                             $invoice->transaction_ref,
                             $invoice->order_id,
