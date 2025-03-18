@@ -29,7 +29,7 @@ class InvoiceProcessed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Factura #'. $this->invoice->id,
+            subject: 'Entrega de pasaporte Factura #'. $this->invoice->id,
         );
     }
 
@@ -39,7 +39,7 @@ class InvoiceProcessed extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.invoice-sent',
+            text: 'mail.invoice-sent',
             markdown: 'mail.invoice-processed',
         );
     }
