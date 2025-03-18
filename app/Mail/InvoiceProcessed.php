@@ -39,7 +39,6 @@ class InvoiceProcessed extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: 'mail.invoice-sent',
             markdown: 'mail.invoice-processed',
         );
     }
