@@ -45,7 +45,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $invoice->service_purchased }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ __($invoice->service_purchased) }}</td>
                     <td style="border: 1px solid #dddddd; text-align: right; padding: 8px;">{{ $invoice->quantity }}</td>
                     <td style="border: 1px solid #dddddd; text-align: right; padding: 8px;">
                         {{ $invoice->currency }}{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}

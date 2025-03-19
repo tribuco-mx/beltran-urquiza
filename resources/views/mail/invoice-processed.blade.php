@@ -176,7 +176,7 @@ padding: 5px;
 <tbody>
 <tr style="height: 250px;">
 <td style="text-align: center; border: 1px solid #000;"><p class="s1">{{ $invoice->quantity }}</p></td>
-<td style="border: 1px solid #000;"><p class="s1">{{ $invoice->service_purchased }}</p></td>
+<td style="border: 1px solid #000;"><p class="s1">{{ __($invoice->service_purchased) }}</p></td>
 <td style="text-align: right; border: 1px solid #000;"><p class="s1">{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}</p></td>
 <td style="text-align: right; border: 1px solid #000;"><p class="s1">-</p></td>
 <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000;"><p class="s2"> {{ number_format($invoice->amount_without_gct, 2) }}</p></td>

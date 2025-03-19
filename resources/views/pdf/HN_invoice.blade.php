@@ -84,7 +84,7 @@
         <tbody>
             <tr style="height: 150px;">
                 <td style="height: 150px; text-align: center; border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->quantity }}</td>
-                <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->service_purchased . ' - ' .  $invoice->transaction_ref }}</td>
+                <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ __($invoice->service_purchased) . ' - ' .  $invoice->transaction_ref }}</td>
                 <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}</td>
                 <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">-</td>
                 <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
