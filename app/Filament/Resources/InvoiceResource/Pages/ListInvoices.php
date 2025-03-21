@@ -119,7 +119,7 @@ class ListInvoices extends ListRecords
             Actions\ImportAction::make()
                 ->importer(importer: InvoiceImporter::class)
                 ->chunkSize(5000)
-                ->job(Actions\Imports\Jobs\ImportCsv::class)
+                ->maxRows(100000)
                 ->headerOffset(4),
             Actions\CreateAction::make(),
             Actions\Action::make('export_invoices')
