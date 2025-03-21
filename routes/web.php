@@ -12,6 +12,12 @@ Route::middleware('auth')
     })
     ->name(name: 'download.zip');
 
+Route::middleware('auth')
+    ->get(uri: 'donload/combined/{file}', action: function (string $file) {
+        return \Illuminate\Support\Facades\Storage::download($file);
+    })
+    ->name(name: 'download.combined');
+
 /*Route::get('/render/{invoice}', function ($invoice) {
     return view('pdf.HN_invoice', ['invoice' => \App\Models\Invoice::find($invoice)]);
 });*/

@@ -1,4 +1,7 @@
 {
     "Premium Point-of-Sale Delivery": "Entrega de pasaporte en Pos de DHL",
-    "Home Delivery": "Entrega de pasaporte en casa u oficina."
+    "Home Delivery": "Entrega de pasaporte en casa u oficina.",
+    "Combine CSVs": "Combinar CSVs",
+    "Upload CSV Files": "Subir CSVs",
+    "CSV files combined successfully.": "CSVs combinados con éxito."
 }
