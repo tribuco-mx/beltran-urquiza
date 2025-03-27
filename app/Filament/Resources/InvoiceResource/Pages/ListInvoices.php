@@ -22,6 +22,7 @@ class ListInvoices extends ListRecords
         return [
             Actions\Action::make('combine_csv')
                 ->label('Combine CSVs')
+                ->modalSubmitActionLabel(__('Combine'))
                 ->translateLabel()
                 ->form([
                     Forms\Components\FileUpload::make('csv_files')
