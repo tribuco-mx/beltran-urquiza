@@ -51,7 +51,7 @@ class ListInvoices extends ListRecords
                         }
                         $filesProcessed++;
                         // Skip the first 4 rows (the header offset)
-                        $fileRows = array_map('str_getcsv', explode("\n", $file));
+                        $fileRows = array_map('str_getcsv', explode("a\n", $file));
                         $skipped = array_splice($fileRows, 0, 4);
                         if (empty($skipped)) {
                             Notification::make()
