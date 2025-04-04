@@ -29,7 +29,7 @@ class ListInvoices extends ListRecords
                         ->label('Upload CSV Files')
                         ->translateLabel()
                         ->multiple()
-                        ->disk('s3') // or your chosen disk
+                        ->disk('s3')
                         ->directory('csv-uploads')
                         ->required(),
                 ])->action(function (array $data) {
@@ -51,7 +51,7 @@ class ListInvoices extends ListRecords
                         }
                         $filesProcessed++;
                         // Skip the first 4 rows (the header offset)
-                        $fileRows = array_map('str_getcsv', explode("a\n", $file));
+                        $fileRows = array_map('str_getcsv', explode("\n", $file));
                         $skipped = array_splice($fileRows, 0, 4);
                         if (empty($skipped)) {
                             Notification::make()
@@ -90,7 +90,19 @@ class ListInvoices extends ListRecords
                         return;
                     }
 
-                    $combinedData = implode("\n", array_map('implode', $combinedData));
+                    // Create 4 rows with the letter 'a' for header offset
+                    $offsetRows = [];
+                    for ($i = 0; $i < 4; $i++) {
+                        $offsetRows[] = ['a'];
+                    }
+
+                    // Merge the offset rows with the combined data
+                    $combinedData = array_merge($offsetRows, $combinedData);
+
+                    // Convert each row array to a CSV formatted string
+                    $combinedData = implode("\n", array_map(function($row) {
+                        return implode(',', $row);
+                    }, $combinedData));
 
                     Notification::make()
                         ->title(__('CSV files combined successfully.'))
