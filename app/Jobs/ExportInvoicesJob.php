@@ -91,34 +91,7 @@ class ExportInvoicesJob implements ShouldQueue
                 ->chunk(100, function ($invoices) use ($zip, $csvHandle) {
                     $index = 1;
                     foreach ($invoices as $invoice) {
-
-                        // Write CSV row
-//                        $dataWithoutGCT = [
-//                            $invoice->id,
-//                            $invoice->customer->name,
-//                            $invoice->order_id . ' - ' . $invoice->service_purchased,
-//                            '123456',
-//                            $invoice->transaction_date,
-//                            $invoice->transaction_ref,
-//                            $invoice->order_id,
-//                            $invoice->service_purchased,
-//                            $invoice->quantity,
-//                            $invoice->amount_without_gct,
-//                            0,
-//                            0,
-//                            $invoice->currency,
-//                            $invoice->customer->email,
-//                            $invoice->customer->tax_id,
-//                            $invoice->customer->billing_address,
-//                            $invoice->customer->province,
-//                            $invoice->customer->payment_method,
-//                            $invoice->customer->cardholder,
-//                            $invoice->customer->card_type,
-//                            $invoice->customer->card_last4,
-//                            $invoice->customer->card_exp_date,
-//                        ];
-
-                        $dataWithoutGCT = [
+                        $dataWithGct = [
                             $index,
                             'Diario',
                             $invoice->transaction_date,
@@ -127,7 +100,7 @@ class ExportInvoicesJob implements ShouldQueue
                             $invoice->transaction_ref,
                             '1110601',
                             $invoice->order_id . ' - ' . __($invoice->service_purchased),
-                            $invoice->amount_without_gct,
+                            $invoice->amount_with_gct,
                             '',
                             '',
                             '',
@@ -137,33 +110,7 @@ class ExportInvoicesJob implements ShouldQueue
                         ];
 
 
-                        fputcsv($csvHandle, $dataWithoutGCT);
-
-//                        $dataGCTOnly = [
-//                            $invoice->id,
-//                            $invoice->customer->name,
-//                            $invoice->order_id . ' - ' . $invoice->service_purchased,
-//                            '123456',
-//                            $invoice->transaction_date,
-//                            $invoice->transaction_ref,
-//                            $invoice->order_id,
-//                            $invoice->service_purchased,
-//                            $invoice->quantity,
-//                            0,
-//                            $invoice->gct,
-//                            0,
-//                            $invoice->currency,
-//                            $invoice->customer->email,
-//                            $invoice->customer->tax_id,
-//                            $invoice->customer->billing_address,
-//                            $invoice->customer->province,
-//                            $invoice->customer->payment_method,
-//                            $invoice->customer->cardholder,
-//                            $invoice->customer->card_type,
-//                            $invoice->customer->card_last4,
-//                            $invoice->customer->card_exp_date,
-//                        ];
-
+                        fputcsv($csvHandle, $dataWithGct);
                         $dataGCTOnly = [
                             $index,
                             'Diario',
@@ -184,32 +131,7 @@ class ExportInvoicesJob implements ShouldQueue
 
                         fputcsv($csvHandle, $dataGCTOnly);
 
-//                        $dataWithGCT = [
-//                            $invoice->id,
-//                            $invoice->customer->name,
-//                            $invoice->order_id . ' - ' . $invoice->service_purchased,
-//                            '123456',
-//                            $invoice->transaction_date,
-//                            $invoice->transaction_ref,
-//                            $invoice->order_id,
-//                            $invoice->service_purchased,
-//                            $invoice->quantity,
-//                            0,
-//                            0,
-//                            $invoice->amount_with_gct,
-//                            $invoice->currency,
-//                            $invoice->customer->email,
-//                            $invoice->customer->tax_id,
-//                            $invoice->customer->billing_address,
-//                            $invoice->customer->province,
-//                            $invoice->customer->payment_method,
-//                            $invoice->customer->cardholder,
-//                            $invoice->customer->card_type,
-//                            $invoice->customer->card_last4,
-//                            $invoice->customer->card_exp_date,
-//                        ];
-
-                        $dataWithGCT = [
+                        $dataWithoutGCT = [
                             $index,
                             'Diario',
                             $invoice->transaction_date,
@@ -219,7 +141,7 @@ class ExportInvoicesJob implements ShouldQueue
                             '4013004',
                             $invoice->order_id . ' - ' . __($invoice->service_purchased),
                             '',
-                            $invoice->amount_with_gct,
+                            $invoice->amount_without_gct,
                             '',
                             '',
                             'VAS0000',
@@ -227,7 +149,7 @@ class ExportInvoicesJob implements ShouldQueue
                             '',
                         ];
 
-                        fputcsv($csvHandle, $dataWithGCT);
+                        fputcsv($csvHandle, $dataWithoutGCT);
 
                         $index++;
 
