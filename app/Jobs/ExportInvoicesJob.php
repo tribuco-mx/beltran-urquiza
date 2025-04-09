@@ -111,26 +111,6 @@ class ExportInvoicesJob implements ShouldQueue
 
 
                         fputcsv($csvHandle, $dataWithGct);
-                        $dataGCTOnly = [
-                            $index,
-                            'Diario',
-                            $invoice->transaction_date,
-                            $invoice->formattedInvoiceNumber,
-                            '',
-                            $invoice->transaction_ref,
-                            '2124902',
-                            $invoice->order_id . ' - ' . __($invoice->service_purchased),
-                            '',
-                            $invoice->gct,
-                            '',
-                            '',
-                            'VAS0000',
-                            '',
-                            '',
-                        ];
-
-                        fputcsv($csvHandle, $dataGCTOnly);
-
                         $dataWithoutGCT = [
                             $index,
                             'Diario',
@@ -138,7 +118,7 @@ class ExportInvoicesJob implements ShouldQueue
                             $invoice->formattedInvoiceNumber,
                             '',
                             $invoice->transaction_ref,
-                            '4013004',
+                            '2124902',
                             $invoice->order_id . ' - ' . __($invoice->service_purchased),
                             '',
                             $invoice->amount_without_gct,
@@ -150,6 +130,26 @@ class ExportInvoicesJob implements ShouldQueue
                         ];
 
                         fputcsv($csvHandle, $dataWithoutGCT);
+
+                        $dataOnlyGct = [
+                            $index,
+                            'Diario',
+                            $invoice->transaction_date,
+                            $invoice->formattedInvoiceNumber,
+                            '',
+                            $invoice->transaction_ref,
+                            '4013004',
+                            $invoice->order_id . ' - ' . __($invoice->service_purchased),
+                            '',
+                            $invoice->gct,
+                            '',
+                            '',
+                            'VAS0000',
+                            '',
+                            '',
+                        ];
+
+                        fputcsv($csvHandle, $dataOnlyGct);
 
                         $index++;
 
