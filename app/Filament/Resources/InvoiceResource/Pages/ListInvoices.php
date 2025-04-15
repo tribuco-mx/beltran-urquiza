@@ -103,7 +103,7 @@ class ListInvoices extends ListRecords
 
                     // Convert each row array to a CSV formatted string
                     $combinedData = implode("\n", array_map(function($row) {
-                        return implode(',', $row);
+                        return implode(';', $row);
                     }, $combinedData));
 
                     Notification::make()
