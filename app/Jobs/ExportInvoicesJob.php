@@ -101,7 +101,7 @@ class ExportInvoicesJob implements ShouldQueue
                             '4013004',
                             $invoice->order_id . ' - ' . __($invoice->service_purchased),
                             '',
-                            $invoice->amount_without_gct,
+                            str($invoice->amount_without_gct),
                             '',
                             '',
                             'VAS0000',
