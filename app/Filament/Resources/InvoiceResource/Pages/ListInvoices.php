@@ -41,6 +41,9 @@ class ListInvoices extends ListRecords
                     foreach ($data['csv_files'] as $filePath) {
                         $fullPath = Storage::disk('s3')->url($filePath);
                         $file = Storage::disk('s3')->get($filePath);
+                        $file = preg_replace_callback('/(?<=\D|^)(\d{1,3}(?:,\d{3})+)(?=\D|$)/', function($matches) {
+                            return str_replace(',', '', $matches[0]);
+                        }, $file);
 
                         if (empty($file)) {
                             Notification::make()
@@ -103,7 +106,7 @@ class ListInvoices extends ListRecords
 
                     // Convert each row array to a CSV formatted string
                     $combinedData = implode("\n", array_map(function($row) {
-                        return implode(';', $row);
+                        return implode(',', $row);
                     }, $combinedData));
 
                     Notification::make()
