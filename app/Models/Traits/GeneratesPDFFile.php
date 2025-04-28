@@ -18,8 +18,19 @@ trait GeneratesPDFFile
         }*/
 
         $this->pdf_file = $this->transaction_ref . '_invoice.pdf';
-        
+
         Pdf::loadView(view: 'pdf.HN_invoice', data: ['invoice' => $this])
+            ->setPaper('a4')
+            ->save(filename: $this->pdf_file, disk: env('FILESYSTEM_DISK', 'local'));
+
+        return $this;
+    }
+
+    public function generateCancelledInvoice(): self
+    {
+        $this->pdf_file = 'cancelada_' . $this->transaction_ref . '_invoice.pdf';
+
+        Pdf::loadView(view: 'pdf.cancelled_invoice', data: ['invoice' => $this])
             ->setPaper('a4')
             ->save(filename: $this->pdf_file, disk: env('FILESYSTEM_DISK', 'local'));
 

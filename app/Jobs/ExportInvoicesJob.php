@@ -61,34 +61,14 @@ class ExportInvoicesJob implements ShouldQueue
                 'Centro Costo',
                 'Centro Costo 2',
                 'Centro Costo 3',
-//                'Customer Name',
-//                'Concept',
-//                'Reference',
-//                'Transaction Date',
-//                'Transaction Ref',
-//                'Order ID',
-//                'Service Purchased',
-//                'Quantity',
-//                'Amount without GCT',
-//                'GCT',
-//                'Amount with GCT',
-//                'Currency',
-//                'Customer Email',
-//                'Customer Tax ID',
-//                'Billing Address',
-//                'Province',
-//                'Payment Method',
-//                'Cardholder',
-//                'Card Type',
-//                'Card Last4',
-//                'Card Exp Date'
+                'Cancelada',
             ]);
 
             // Query the invoices based on the date range and add them to the ZIP
             Invoice::query()
                 ->whereBetween('transaction_date', [$this->from, $this->to])
                 ->with('customer') // Eager load the customer relationship
-                ->chunk(100, function ($invoices) use ($zip, $csvHandle) {
+                ->chunk(200, function ($invoices) use ($zip, $csvHandle) {
                     $index = 1;
                     foreach ($invoices as $invoice) {
                         $dataWithGct = [
@@ -107,6 +87,7 @@ class ExportInvoicesJob implements ShouldQueue
                             'VAS0000',
                             '',
                             '',
+                            $invoice->is_cancelled ? 'Cancelada' : '',
                         ];
 
 
@@ -127,6 +108,7 @@ class ExportInvoicesJob implements ShouldQueue
                             'VAS0000',
                             '',
                             '',
+                            $invoice->is_cancelled ? 'Cancelada' : '',
                         ];
 
                         fputcsv($csvHandle, $dataWithoutGCT);
@@ -147,6 +129,7 @@ class ExportInvoicesJob implements ShouldQueue
                             'VAS0000',
                             '',
                             '',
+                            $invoice->is_cancelled ? 'Cancelada' : '',
                         ];
 
                         fputcsv($csvHandle, $dataOnlyGct);

@@ -24,6 +24,7 @@ class Invoice extends Model
         'amount_with_gct',
         'currency',
         'pdf_file',
+        'is_cancelled',
     ];
 
     public static function boot()

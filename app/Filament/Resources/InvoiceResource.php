@@ -6,15 +6,20 @@ use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
 use App\Mail\InvoiceProcessed;
 use App\Models\Invoice;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceResource extends Resource
 {
@@ -81,6 +86,13 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID Factura')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('is_cancelled')
+                    ->label('Cancelada')
+                    ->badge()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->getStateUsing(fn(Invoice $record): ?string => $record->is_cancelled ? 'Cancelada' : '')
+                    ->color(Color::Red),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->badge()
                     ->sortable(),
@@ -133,7 +145,8 @@ class InvoiceResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+//                    Tables\Actions\DeleteBulkAction::make(),
+                    static::getCancelActions(Tables\Actions\BulkAction::make('cancel')),
                 ]),
             ]);
     }
@@ -152,5 +165,75 @@ class InvoiceResource extends Resource
             'create' => Pages\CreateInvoice::route('/create'),
             'edit' => Pages\EditInvoice::route('/{record}/edit'),
         ];
+    }
+
+    public static function getCancelActions(Tables\Actions\BulkAction $action): Tables\Actions\BulkAction
+    {
+        return $action
+            ->requiresConfirmation()
+            ->label('Cancel invoices')
+            ->translateLabel()
+            ->icon('heroicon-o-x-circle')
+            ->color(Color::Red)
+            ->action(function (Collection $records) {
+                foreach ($records as $record) {
+                    $record->update(['is_cancelled' => true]);
+                    $record->save();
+
+                    $record->generateCancelledInvoice()->save();
+
+                    Notification::make()->success()->title('Invoices cancelled successfully')->send();
+                }
+
+                self::generateZip($records);
+            });
+    }
+
+    public static function generateZip(Collection $invoices): void
+    {
+        // Define the filename with a unique identifier
+        $filename = 'facturas-canceladas-' . \Illuminate\Support\Str::uuid() . '.zip';
+
+        // Create a new ZipArchive instance
+        $zip = new \ZipArchive();
+
+        // Open the ZIP file for writing
+        if ($zip->open($filename, \ZipArchive::CREATE) === true) {
+            foreach ($invoices as $invoice) {
+                // Read the PDF content from storage
+                $contents = Storage::read($invoice->pdf_file);
+
+                // Add the PDF file to the ZIP archive
+                $zip->addFromString(
+                    __('Factura #:id cancelada', ['id' => $invoice->id]) . '.pdf',
+                    $contents
+                );
+            };
+            // Close the ZIP archive
+            $zip->close();
+
+            // Save the ZIP file to storage
+            Storage::put($filename, file_get_contents($filename));
+
+            // Send the download notification
+            Notification::make()
+                ->title(__('Facturas canceladas :date', ['date' => now()->format('Y-m-d')]))
+                ->body(__('Facturas canceladas con éxito, puedes descargar el zip con las facturas aquí'))
+                ->actions([
+                    Action::make('Descargar')
+                        ->icon('heroicon-o-arrow-down')
+                        ->url(route('download.zip', ['file' => $filename]))
+                        ->extraAttributes([
+                            'target' => '_blank',
+                        ]),
+                ])
+                ->success()
+                ->sendToDatabase(users: User::all());
+
+            // Delete the temporary files
+            unlink($filename);
+        } else {
+            throw new \Exception('Failed to create ZIP archive.');
+        }
     }
 }
