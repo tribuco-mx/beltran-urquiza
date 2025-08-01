@@ -41,7 +41,7 @@
                 <p style="color: black; font-size: 8pt;">
                     CAI: {{ env('CAI', '28EF0B-3354D1-CC7BE0-63BE03-0909D6-EA') }}</p>
                 <p style="color: black; font-size: 8pt;">Rango
-                    autorizado: {{ env('AUTHORIZED_RANGE', '000-001-01-00000001 / 000-001-01-00010000') }}</p>
+                    autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p>
                 <p style="color: black; font-size: 8pt;">Fecha límite de
                     emisión: {{ env('EMISSION_LIMIT_DATE', '10/12/2025') }} </p>
             </td>

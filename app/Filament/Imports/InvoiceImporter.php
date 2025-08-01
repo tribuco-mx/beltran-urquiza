@@ -170,7 +170,7 @@ class InvoiceImporter extends Importer
     {
         return Invoice::firstOrNew([
             // Update existing records, matching them by `$this->data['column_name']`
-            'is_cancelled' => false,
+//            'is_cancelled' => false,
             'order_id' => $this->data['tax_invoice'],
         ]);
     }
