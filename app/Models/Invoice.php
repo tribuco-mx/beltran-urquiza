@@ -33,7 +33,7 @@ class Invoice extends Model
 
         self::creating(function(Invoice $model) {
             /** @var int $limit */
-            $limit = (int) env('INVOICE_LIMIT', 10000);
+            $limit = (int) env('INVOICE_LIMIT', 40000);
 
             if ( Invoice::query()->count() >= 1 && Invoice::latest()->first()->id >= $limit) {
                 throw new \Exception("Invoice limit of {$limit} reached");
