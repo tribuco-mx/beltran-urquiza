@@ -43,7 +43,7 @@
                 <p style="color: black; font-size: 8pt;">Rango
                     autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p>
                 <p style="color: black; font-size: 8pt;">Fecha límite de
-                    emisión: {{ env('EMISSION_LIMIT_DATE', '10/12/2025') }} </p>
+                    emisión: {{ env('EMISSION_LIMIT_DATE', '15/07/2026') }} </p>
             </td>
             <td style="width: 50%; vertical-align: top;">
                 <p style="color: black; font-weight: bold; font-size: 8pt;">FECHA DE FACTURA:</p>
