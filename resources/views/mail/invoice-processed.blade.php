@@ -97,13 +97,13 @@ padding: 5px;
 <td><p class="s1">Correo electrónico: {{ $invoice->company->email }}</p></td>
 </tr>
 <tr>
-<td><p class="s1">CAI: {{ env('CAI', '39FBAB-F87DEC-5215E0-63BE03-0909E9-78') }}</p></td>
+<td><p class="s1">CAI: 39FBAB-F87DEC-5215E0-63BE03-0909E9-78</p></td>
 </tr>
 <tr>
-<td><p class="s1">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p></td>
+<td><p class="s1">Rango autorizado: 30000 000-001-01-00010001 / 000-001-01-00040000</p></td>
 </tr>
 <tr>
-<td><p class="s1">Fecha límite de emisión:  {{ env('EMISSION_LIMIT_DATE', '15/07/2026') }}</p></td>
+<td><p class="s1">Fecha límite de emisión: 15/07/2026</p></td>
 </tr>
 </table>
 
