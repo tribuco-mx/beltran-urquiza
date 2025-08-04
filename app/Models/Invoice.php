@@ -38,7 +38,7 @@ class Invoice extends Model
             if ( Invoice::query()->count() >= 1 && Invoice::latest()->first()->id >= $limit) {
                 throw new \Exception("Invoice limit of {$limit} reached");
             }
-            if (now() > Carbon::parse('15/07/2026')) {
+            if (now() > Carbon::parse('2026-07-15')) {
                 throw new \Exception("Emission limit date reached");
             }
         });

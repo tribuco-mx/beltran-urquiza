@@ -8,26 +8,26 @@
 <body style="display: flex; justify-content: center; font-family: Arial, sans-serif;">
 
 <div style="width: 100%; background-color: #fff; padding: 20px;">
-{{--    @if(env('APP_ENV') !== 'production')--}}
-{{--        <div style="--}}
-{{--            position: fixed;--}}
-{{--            top: 45%;--}}
-{{--            width: 100%;--}}
-{{--            text-align: center;--}}
-{{--            opacity: .6;--}}
-{{--            color: red;--}}
-{{--            font-size: 72px;--}}
-{{--            transform: rotate(10deg);--}}
-{{--            transform-origin: 50% 50%;--}}
-{{--            z-index: 1000;--}}
-{{--        ">--}}
-{{--            SIN VALIDEZ OFICIAL--}}
-{{--        </div>--}}
-{{--    @endif--}}
+    {{--    @if(env('APP_ENV') !== 'production')--}}
+    {{--        <div style="--}}
+    {{--            position: fixed;--}}
+    {{--            top: 45%;--}}
+    {{--            width: 100%;--}}
+    {{--            text-align: center;--}}
+    {{--            opacity: .6;--}}
+    {{--            color: red;--}}
+    {{--            font-size: 72px;--}}
+    {{--            transform: rotate(10deg);--}}
+    {{--            transform-origin: 50% 50%;--}}
+    {{--            z-index: 1000;--}}
+    {{--        ">--}}
+    {{--            SIN VALIDEZ OFICIAL--}}
+    {{--        </div>--}}
+    {{--    @endif--}}
     @if(! is_null($invoice->company?->logo))
         <img src="{{ 'data:image/png;base64,' . base64_encode(Storage::get($invoice->company?->logo)) }}"
-            alt="{{ $invoice->company->name }}"
-            style="height: 50px; width: auto;"
+             alt="{{ $invoice->company->name }}"
+             style="height: 50px; width: auto;"
         />
     @endif
 
@@ -40,10 +40,9 @@
                 <p style="color: black; font-size: 8pt;">{{ $invoice->company->address }} {{ $invoice->company->city }} {{ $invoice->company->state }}</p>
                 <p style="color: black; font-size: 8pt;">Número de teléfono: {{ $invoice->company->phone }}</p>
                 <p style="color: black; font-size: 8pt;">Correo electrónico: {{ $invoice->company->email }}</p>
-                <p style="color: black; font-size: 8pt;">CAI: 39FBAB-F87DEC-5215E0-63BE03-0909E9-78</p>
-                {{-- Todo update to determine the authorized range--}}
-                <p style="color: black; font-size: 8pt;">Rango autorizado: 30000 000-001-01-00010001 / 000-001-01-00040000</p>
-                <p style="color: black; font-size: 8pt;">Fecha límite de emisión: 15/07/2026 </p>
+                <p style="color: black; font-size: 8pt;">CAI: {{ env('CAI', '39FBAB-F87DEC-5215E0-63BE03-0909E9-78') }}</p>
+                <p style="color: black; font-size: 8pt;">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p>
+                <p style="color: black; font-size: 8pt;">Fecha límite de emisión: {{ env('EMISSION_LIMIT_DATE', '15/07/2026') }} </p>
             </td>
             <td style="width: 50%; vertical-align: top;">
                 <p style="color: black; font-weight: bold; font-size: 8pt;">FECHA DE FACTURA:</p>
@@ -74,27 +73,27 @@
 
     <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
         <thead>
-            <tr style="background-color: #F1F1F1; border: 1px solid #000;">
-                <td style="width: 40px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">CANTIDAD</td>
-                <td style="width: 60px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">DESCRIPCIÓN</td>
-                <td style="width: 100px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">PRECIO UNITARIO</td>
-                <td style="width: 150px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">DESCUENTOS Y REBAJAS</td>
-                <td style="width: 120px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">TOTAL</td>
-            </tr>
+        <tr style="background-color: #F1F1F1; border: 1px solid #000;">
+            <td style="width: 40px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">CANTIDAD</td>
+            <td style="width: 60px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">DESCRIPCIÓN</td>
+            <td style="width: 100px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">PRECIO UNITARIO</td>
+            <td style="width: 150px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">DESCUENTOS Y REBAJAS</td>
+            <td style="width: 120px; text-align: center; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">TOTAL</td>
+        </tr>
         </thead>
         <tbody>
-            <tr style="height: 150px;">
-                <td style="height: 150px; text-align: center; border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->quantity }}</td>
-                <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ __($invoice->service_purchased) . ' - ' .  $invoice->transaction_ref }}</td>
-                <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}</td>
-                <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">-</td>
-                <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-                <td style="text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">Total L.</td>
-                <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
-            </tr>
+        <tr style="height: 150px;">
+            <td style="height: 150px; text-align: center; border: 1px solid #000; color: black; font-size: 8pt;">{{ $invoice->quantity }}</td>
+            <td style="border: 1px solid #000; color: black; font-size: 8pt;">{{ __($invoice->service_purchased) . ' - ' .  $invoice->transaction_ref }}</td>
+            <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">{{ number_format($invoice->amount_without_gct / $invoice->quantity, 2) }}</td>
+            <td style="text-align: right; border: 1px solid #000; color: black; font-size: 8pt;">-</td>
+            <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td style="text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">Total L.</td>
+            <td style="background-color: #F1F1F1; text-align: right; border: 1px solid #000; color: black; font-weight: bold; font-size: 8pt;">{{ number_format($invoice->amount_without_gct, 2) }}</td>
+        </tr>
         </tbody>
     </table>
 

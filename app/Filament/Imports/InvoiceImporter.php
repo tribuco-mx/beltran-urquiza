@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 ini_set('max_execution_time', 1000);
 
+
 class InvoiceImporter extends Importer
 {
     protected static ?string $model = Invoice::class;
-
 
     public static function getColumns(): array
     {
@@ -48,6 +48,7 @@ class InvoiceImporter extends Importer
                 ->fillRecordUsing(function (Invoice $record, array $data) {
                     $record->service_purchased = $data['service_purchased'] ?? '';
                 }),
+
 
             ImportColumn::make('quantity')
                 ->label('Quantity')
@@ -155,6 +156,13 @@ class InvoiceImporter extends Importer
                 ->required(),
         ];
     }
+
+
+    public static function headingRow(): ?int
+    {
+        return 4;
+    }
+
 
     /**
      * Cast a numeric string to float with 3 decimal palces
