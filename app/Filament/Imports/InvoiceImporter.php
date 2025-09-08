@@ -237,7 +237,7 @@ class InvoiceImporter extends Importer
         $data = $this->data;
 
         // Check if the customer already exists based on email
-        return Customer::firstOrCreate(
+        return Customer::updateOrCreate(
             ['email' => $data['client_email']],
             [
                 'name' => $data['billed_to'],

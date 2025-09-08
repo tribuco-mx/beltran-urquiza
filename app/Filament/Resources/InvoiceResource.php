@@ -95,7 +95,8 @@ class InvoiceResource extends Resource
                     ->color(Color::Red),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->date()
                     ->sortable(),
