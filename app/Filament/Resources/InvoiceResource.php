@@ -36,9 +36,11 @@ class InvoiceResource extends Resource
                 Forms\Components\Section::make(__('Información de la factura'))
                     ->schema([
                         Forms\Components\TextInput::make('order_id')
+                            ->label('Tax invoice #')
                             ->required()
                             ->columnSpanFull(),
                         Forms\Components\Select::make('customer_id')
+                            ->label('Billed To')
                             ->required()
                             ->preload()
                             ->searchable()
