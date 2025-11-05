@@ -1,4 +1,7 @@
-<x-mail::message>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
     <style type="text/css">
         * {
             margin: 0;
@@ -60,6 +63,8 @@
             padding: 5px;
         }
     </style>
+    <title>Factura fiscals</title>
+</head><body>
     <div>
         <p style="margin-top: 10px; font-size: 10pt; font-weight: bold;">Anexo factura fiscal por el servicio de mensajería de entrega del pasaporte.</p>
     </div>
@@ -280,4 +285,4 @@
             </tr>
         </table>
     </div>
-</x-mail::message>
+</body></html>
