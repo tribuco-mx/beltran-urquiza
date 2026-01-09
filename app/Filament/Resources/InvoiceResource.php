@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Svg\Tag\Text;
 
 class InvoiceResource extends Resource
 {
@@ -35,6 +36,11 @@ class InvoiceResource extends Resource
             ->schema([
                 Forms\Components\Section::make(__('Información de la factura'))
                     ->schema([
+                        Forms\Components\TextInput::make('id')
+                            ->label('ID de la factura')
+                            ->unique()
+                            ->numeric()
+                            ->columnSpanFull(),
                         Forms\Components\TextInput::make('order_id')
                             ->label('Tax invoice #')
                             ->required()
