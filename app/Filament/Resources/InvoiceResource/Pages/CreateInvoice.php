@@ -10,7 +10,9 @@ class CreateInvoice extends CreateRecord
 {
     protected static string $resource = InvoiceResource::class;
 
-    protected function afterCreate() {
-
+    protected function afterCreate()
+    {
+        $this->record->generateInvoice()->save();
     }
+
 }

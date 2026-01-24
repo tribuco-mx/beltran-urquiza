@@ -36,11 +36,10 @@ class InvoiceResource extends Resource
             ->schema([
                 Forms\Components\Section::make(__('Información de la factura'))
                     ->schema([
-                        Forms\Components\TextInput::make('id')
-                            ->label('ID de la factura')
-                            ->unique()
-                            ->numeric()
-                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('folio')
+                            ->label('Folio')
+                            ->required()
+                            ->unique(),
                         Forms\Components\TextInput::make('order_id')
                             ->label('Tax invoice #')
                             ->required()
@@ -94,39 +93,51 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID Factura')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('folio')
+                    ->label('Folio')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('is_cancelled')
                     ->label('Cancelada')
                     ->badge()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->getStateUsing(fn(Invoice $record): ?string => $record->is_cancelled ? 'Cancelada' : '')
                     ->color(Color::Red),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->badge()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_ref')
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('service_purchased')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount_without_gct')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('gct')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount_with_gct')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('currency')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -142,6 +153,14 @@ class InvoiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Regenerate PDF')
+                    ->label('Regenerar Factura')
+                    ->icon('heroicon-o-document-text')
+                    ->action(function (Invoice $record) {
+                        $record->generateInvoice()->save();
+                        Storage::download($record->pdf_file);
+                    })
+                    ->after(callback: fn() => Notification::make()->success()->title('Factura regenerada con éxito')->send()),
                 Tables\Actions\Action::make('send_email')
                     ->label('Send email')
                     ->icon('heroicon-o-paper-airplane')
