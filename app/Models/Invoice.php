@@ -25,6 +25,7 @@ class Invoice extends Model
         'currency',
         'pdf_file',
         'is_cancelled',
+        'folio'
     ];
 
     public static function boot()
@@ -41,6 +42,15 @@ class Invoice extends Model
             if (now() > Carbon::parse('2026-07-15')) {
                 throw new \Exception("Emission limit date reached");
             }
+        });
+
+        self::created(function(Invoice $model) {
+
+            $lastInvoice = Invoice::where('folio', '!=', null)
+                ->orderByDesc('folio')
+                ->first();
+            $model->folio = $lastInvoice ? $lastInvoice->folio + 1 : env('FIRST_FOLIO');
+            $model->save();
         });
     }
 
@@ -63,7 +73,7 @@ class Invoice extends Model
     protected function formattedInvoiceNumber(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => preg_replace('/(\d{3})(\d{3})(\d{2})(\d{8})/', '$1-$2-$3-$4', sprintf('00000101%08d', $this->id)),
+            get: fn (mixed $value) => preg_replace('/(\d{3})(\d{3})(\d{2})(\d{8})/', '$1-$2-$3-$4', sprintf('00000101%08d', $this->folio)),
         );
     }
 }

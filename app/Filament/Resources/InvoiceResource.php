@@ -38,7 +38,6 @@ class InvoiceResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('folio')
                             ->label('Folio')
-                            ->required()
                             ->unique(),
                         Forms\Components\TextInput::make('order_id')
                             ->label('Tax invoice #')
