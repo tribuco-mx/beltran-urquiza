@@ -188,12 +188,6 @@ class InvoiceImporter extends Importer
         /** @var Invoice $invoice */
         $invoice = $this->record;
 
-        $lastInvoice = Invoice::where('folio', '!=', null)
-            ->orderByDesc('folio')
-            ->first();
-
-        $invoice->folio = $lastInvoice ? $lastInvoice->folio + 1 : env('FIRST_FOLIO');
-
         /** @var ?Customer $customer */
         $customer = null;
 
