@@ -39,8 +39,8 @@ class ListInvoices extends ListRecords
                     $filesProcessed = 0;
 
                     foreach ($data['csv_files'] as $filePath) {
-                        $fullPath = Storage::disk('s3')->url($filePath);
-                        $file = Storage::disk('s3')->get($filePath);
+                        $fullPath = Storage::url($filePath);
+                        $file = Storage::get($filePath);
 
                         if (empty($file)) {
                             Notification::make()
@@ -114,7 +114,7 @@ class ListInvoices extends ListRecords
 
                     // Write the combined data to a new CSV file with a 4-row header offset
                     $combinedFilePath = 'combined-' . date('YmdHis') . '.csv';
-                    Storage::disk('s3')->put($combinedFilePath, $combinedData);
+                    Storage::put($combinedFilePath, $combinedData);
 
                     Notification::make()
                         ->title('CSV files combined successfully.')
@@ -123,7 +123,7 @@ class ListInvoices extends ListRecords
                         ->actions([
                             Action::make('Descargar')
                                 ->icon('heroicon-o-arrow-down')
-                                ->url(Storage::disk('s3')->url($combinedFilePath))
+                                ->url(Storage::url($combinedFilePath))
                                 ->extraAttributes([
                                     'target' => '_blank',
                                 ]),
