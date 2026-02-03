@@ -198,17 +198,18 @@ class InvoiceImporter extends Importer
 
             $invoice->company_id = $this->options['company_id'];
 
+            Log::info('Client created');
+
             $invoice->save();
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-            dd($exception);
             // The exception occurs due invalid fields in the customer or invoice data
             return;
         }
 
         try {
             $invoice->generateInvoice()->save();
-            dd('ok');
+            Log::info('Invoice generated');
         } catch (\Exception $exception) {
             Log::error('Failed to generate invoice for invoice ID ' . $invoice->id, ['exception' => $exception]);
         }
