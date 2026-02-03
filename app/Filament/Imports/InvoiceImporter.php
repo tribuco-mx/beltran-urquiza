@@ -203,6 +203,7 @@ class InvoiceImporter extends Importer
             $invoice->save();
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
+            dd($exception);
             // The exception occurs due invalid fields in the customer or invoice data
             return;
         }
