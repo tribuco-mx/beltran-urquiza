@@ -135,6 +135,7 @@ class ListInvoices extends ListRecords
                 ->headerOffset(4)
                 ->importer(importer: InvoiceImporter::class)
                 ->chunkSize(5000)
+
                 ->maxRows(100000),
             Actions\CreateAction::make(),
             Actions\Action::make('export_invoices')

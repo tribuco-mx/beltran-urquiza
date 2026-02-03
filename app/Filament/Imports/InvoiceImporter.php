@@ -14,7 +14,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-ini_set('max_execution_time', 1000);
+ini_set('max_execution_time', 10000);
 
 
 class InvoiceImporter extends Importer
@@ -240,6 +240,9 @@ class InvoiceImporter extends Importer
     protected function createOrGetCustomer(): Customer
     {
         $data = $this->data;
+
+        Log::info($data);
+        dd($data);
 
         // Check if the customer already exists based on email
         return Customer::updateOrCreate(
