@@ -132,7 +132,6 @@ class ListInvoices extends ListRecords
                         ->send();
                 }),
             Actions\ImportAction::make()
-                ->headerOffset(4)
                 ->importer(importer: InvoiceImporter::class)
                 ->chunkSize(5000)
 

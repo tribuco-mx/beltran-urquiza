@@ -242,7 +242,6 @@ class InvoiceImporter extends Importer
         $data = $this->data;
 
         Log::info($data);
-        dd($data);
 
         // Check if the customer already exists based on email
         return Customer::updateOrCreate(
