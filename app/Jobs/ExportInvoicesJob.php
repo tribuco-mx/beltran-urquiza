@@ -141,7 +141,7 @@ class ExportInvoicesJob implements ShouldQueue
 
                         // Add the PDF file to the ZIP archive
                         $zip->addFromString(
-                            __('Factura #:id', ['id' => $invoice->id]) . '.pdf',
+                            __('Factura #:id', ['id' => $invoice->folio]) . '.pdf',
                             $contents
                         );
                     }
