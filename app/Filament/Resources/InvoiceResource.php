@@ -112,7 +112,6 @@ class InvoiceResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_ref')
-
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order_id')
                     ->searchable(),
@@ -166,7 +165,11 @@ class InvoiceResource extends Resource
                     ->action(function (Invoice $record) {
                         $record->generateInvoice()->save();
 
-                        Mail::to($record->customer->email)->send(new InvoiceProcessed(invoice: $record));
+                        try {
+                            Mail::to($record->customer->email)->send(new InvoiceProcessed(invoice: $record));
+                        } catch (\Exception $exception) {
+                            dd($exception);
+                        }
                     })
                     ->after(callback: fn() => Notification::make()->success()->title('Invoice sent successfully')->send()),
             ])
