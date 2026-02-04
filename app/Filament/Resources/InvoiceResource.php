@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Svg\Tag\Text;
@@ -167,6 +168,7 @@ class InvoiceResource extends Resource
 
                         try {
                             Mail::to($record->customer->email)->send(new InvoiceProcessed(invoice: $record));
+                            Log::info('Email sent');
                         } catch (\Exception $exception) {
                             dd($exception);
                         }
