@@ -237,7 +237,7 @@ class InvoiceResource extends Resource
 
                 // Add the PDF file to the ZIP archive
                 $zip->addFromString(
-                    __('Factura #:id cancelada', ['id' => $invoice->id]) . '.pdf',
+                    __('Factura #:id cancelada', ['id' => $invoice->folio]) . '.pdf',
                     $contents
                 );
             };

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Invoice #{{ $invoice->id }}</title>
+    <title>Invoice #{{ $invoice->folio }}</title>
 </head>
 <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px;">
 
@@ -25,7 +25,7 @@
                 <p>Tax ID: {{ $invoice->customer->tax_id }}</p>
             </div>
             <div style="width: 50%; float: right; text-align: right;">
-                <p><strong>Invoice #:</strong> {{ $invoice->id }}</p>
+                <p><strong>Invoice #:</strong> {{ $invoice->folio }}</p>
                 <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($invoice->transaction_date)->format('F d, Y') }}</p>
                 <p><strong>Transaction Ref:</strong> {{ $invoice->transaction_ref }}</p>
                 <p><strong>Order ID:</strong> {{ $invoice->order_id }}</p>

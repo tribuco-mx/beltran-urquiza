@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FACTURA #{{ $invoice->id }}</title>
+    <title>FACTURA #{{ $invoice->folio }}</title>
     <meta name="author" content="Jose Alejandro Melendez">
 </head>
 <body style="display: flex; justify-content: center; font-family: Arial, sans-serif;">
