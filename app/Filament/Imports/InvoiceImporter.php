@@ -29,10 +29,29 @@ class InvoiceImporter extends Importer
             ImportColumn::make('transaction_date')
                 ->label('Transaction Date')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    if (!empty($data['transaction_date'])) {
-                        $record->transaction_date = \Carbon\Carbon::createFromFormat('d/m/Y', $data['transaction_date'])->format('Y-m-d');
-                    } else {
+
+                    $value = trim($data['transaction_date'] ?? '');
+
+                    if (empty($value)) {
                         $record->transaction_date = now();
+                        return;
+                    }
+
+                    try {
+                        $normalized = str_replace(['-', '.'], '/', $value);
+
+                        $normalized = explode(' ', $normalized)[0];
+
+                        $date = \Carbon\Carbon::createFromFormat('d/m/Y', $normalized);
+
+                        $record->transaction_date = $date->format('Y-m-d');
+                    } catch (\Exception $e) {
+                        try {
+                            $record->transaction_date = \Carbon\Carbon::parse($value)->format('Y-m-d');
+                        } catch (\Exception $e) {
+                            Log::error('Error parsing transaction date: ' . $value);
+                            return;
+                        }
                     }
                 }),
 
