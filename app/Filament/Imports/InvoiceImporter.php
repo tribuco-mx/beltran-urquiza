@@ -14,6 +14,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+
 ini_set('max_execution_time', 10000);
 
 
@@ -28,7 +29,11 @@ class InvoiceImporter extends Importer
             ImportColumn::make('transaction_date')
                 ->label('Transaction Date')
                 ->fillRecordUsing(function (Invoice $record, array $data) {
-                    $record->transaction_date = $data['transaction_date'] ?? now();
+                    if (!empty($data['transaction_date'])) {
+                        $record->transaction_date = \Carbon\Carbon::createFromFormat('d/m/Y', $data['transaction_date'])->format('Y-m-d');
+                    } else {
+                        $record->transaction_date = now();
+                    }
                 }),
 
             ImportColumn::make('transaction_ref')
