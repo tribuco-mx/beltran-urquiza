@@ -156,7 +156,8 @@ class InvoiceResource extends Resource
                     ->label('Regenerar Factura')
                     ->icon('heroicon-o-document-text')
                     ->action(function (Invoice $record) {
-                        $record->generateInvoice()->save();
+                        $record->regeneratePDF()->save();
+//                        $record->generateInvoice()->save();
                         Storage::download($record->pdf_file);
                     })
                     ->after(callback: fn() => Notification::make()->success()->title('Factura regenerada con éxito')->send()),

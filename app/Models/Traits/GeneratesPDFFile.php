@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 trait GeneratesPDFFile
 {
+    public function regeneratePDF(): self
+    {
+        $this->is_cancelled
+            ? $this->generateCancelledInvoice()
+            : $this->generateInvoice();
+        return $this;
+    }
+
     /**
      * Generates the PDF invoice, saves it to storage and sets the $this->pdf_file property.
      */
@@ -19,7 +27,7 @@ trait GeneratesPDFFile
 
         $this->pdf_file = $this->transaction_ref . '_invoice.pdf';
 
-        Pdf::loadView(view: 'pdf.HN_invoice', data: ['invoice' => $this])
+        Pdf::loadView('pdf.HN_invoice', ['invoice' => $this])
             ->setPaper('a4')
             ->save(filename: $this->pdf_file, disk: env('FILESYSTEM_DISK', 'local'));
 
@@ -30,7 +38,7 @@ trait GeneratesPDFFile
     {
         $this->pdf_file = 'cancelada_' . $this->transaction_ref . '_invoice.pdf';
 
-        Pdf::loadView(view: 'pdf.cancelled_invoice', data: ['invoice' => $this])
+        Pdf::loadView('pdf.cancelled_invoice', ['invoice' => $this])
             ->setPaper('a4')
             ->save(filename: $this->pdf_file, disk: env('FILESYSTEM_DISK', 'local'));
 
