@@ -43,12 +43,12 @@ class ExportInvoicesJob implements ShouldQueue
 
             // Write the UTF-8 BOM:
             fputs($csvHandle, "\xEF\xBB\xBF");
-            
+
             $firstInvoice = Invoice::query()
                 ->whereBetween('transaction_date', [$this->from, $this->to])
                 ->first();
 
-            fputcsv($csvHandle, ['Name', $firstInvoice?->company->name ?? env('COMPANY_NAME')]);
+            fputcsv($csvHandle, ['Nombre', $firstInvoice?->company->name ?? env('COMPANY_NAME')]);
             fputcsv($csvHandle, ['RTN', $firstInvoice?->company->tax_id ?? env('COMPANY_TAX_ID')]);
 
             // Write the CSV headers
