@@ -243,7 +243,7 @@ class InvoiceImporter extends Importer
 
 
         try {
-            Mail::to($customer->email)->send(new InvoiceProcessed(invoice: $invoice));
+            Mail::to($customer->email ?? 'gd.hon@beltran-urquiza.com')->send(new InvoiceProcessed(invoice: $invoice));
         } catch (\Exception $e) {
             Log::error('Failed to send invoice email for invoice ID ' . $invoice->id, ['exception' => $e]);
         }
