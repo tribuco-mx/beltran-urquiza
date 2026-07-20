@@ -168,8 +168,10 @@ class InvoiceResource extends Resource
                         $record->generateInvoice()->save();
 
                         try {
-                            Mail::to($record->customer->email ?? 'gd.hon@beltran-urquiza.com')->send(new InvoiceProcessed(invoice: $record));
-                            Log::info('Email sent');
+                            if(env('SEND_MAIL', true)) {
+                                Mail::to($record->customer->email ?? 'gd.hon@beltran-urquiza.com')->send(new InvoiceProcessed(invoice: $record));
+                                Log::info('Email sent');
+                            }
                         } catch (\Exception $exception) {
                             dd($exception);
                         }

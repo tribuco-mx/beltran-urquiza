@@ -40,9 +40,9 @@
                 <p style="color: black; font-size: 8pt;">{{ $invoice->company->address }} {{ $invoice->company->city }} {{ $invoice->company->state }}</p>
                 <p style="color: black; font-size: 8pt;">Número de teléfono: {{ $invoice->company->phone }}</p>
                 <p style="color: black; font-size: 8pt;">Correo electrónico: {{ $invoice->company->email }}</p>
-                <p style="color: black; font-size: 8pt;">CAI: {{ env('CAI', '39FBAB-F87DEC-5215E0-63BE03-0909E9-78') }}</p>
-                <p style="color: black; font-size: 8pt;">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p>
-                <p style="color: black; font-size: 8pt;">Fecha límite de emisión: {{ env('EMISSION_LIMIT_DATE', '15/07/2026') }} </p>
+                <p style="color: black; font-size: 8pt;">CAI: {{ env('CAI', '569592-291744-B6C9E0-63BE03-0909DC-A5') }}</p>
+                <p style="color: black; font-size: 8pt;">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00040001 / 000-001-01-00070000') }}</p>
+                <p style="color: black; font-size: 8pt;">Fecha límite de emisión: {{ env('EMISSION_LIMIT_DATE', '14/07/2027') }} </p>
             </td>
             <td style="width: 50%; vertical-align: top;">
                 <p style="color: black; font-weight: bold; font-size: 8pt;">FECHA DE FACTURA:</p>

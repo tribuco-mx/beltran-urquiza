@@ -102,13 +102,13 @@
                     <td><p class="s1">Correo electrónico: {{ $invoice->company->email }}</p></td>
                 </tr>
                 <tr>
-                    <td><p class="s1">CAI: {{ env('CAI', '39FBAB-F87DEC-5215E0-63BE03-0909E9-78') }}</p></td>
+                    <td><p class="s1">CAI: {{ env('CAI', '569592-291744-B6C9E0-63BE03-0909DC-A5 ') }}</p></td>
                 </tr>
                 <tr>
-                    <td><p class="s1">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00010001 / 000-001-01-00040000') }}</p></td>
+                    <td><p class="s1">Rango autorizado: {{ env('AUTHORIZED_RANGE', '30000 000-001-01-00040001 / 000-001-01-00070000') }}</p></td>
                 </tr>
                 <tr>
-                    <td><p class="s1">Fecha límite de emisión:  {{ env('EMISSION_LIMIT_DATE', '15/07/2026') }}</p></td>
+                    <td><p class="s1">Fecha límite de emisión:  {{ env('EMISSION_LIMIT_DATE', '14/07/2027') }}</p></td>
                 </tr>
             </table>
 
