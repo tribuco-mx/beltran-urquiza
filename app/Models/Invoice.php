@@ -28,29 +28,29 @@ class Invoice extends Model
         'folio'
     ];
 
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
 
-        self::creating(function(Invoice $model) {
-            /** @var int $limit */
+        self::creating(function (Invoice $model) {
             $limit = (int) env('INVOICE_LIMIT', 40000);
+            $firstFolio = (int) env('FIRST_FOLIO', 1);
 
-            if ( Invoice::query()->count() >= 1 && Invoice::latest()->first()->id >= $limit) {
+            if (Invoice::query()->count() >= 1 && Invoice::latest()->first()->id >= $limit) {
                 throw new \Exception("Invoice limit of {$limit} reached");
             }
-            if (now() > Carbon::parse('2027-07-14')) {
-                throw new \Exception("Emission limit date reached");
+
+            if (now()->greaterThan(Carbon::parse('2027-07-14'))) {
+                throw new \Exception('Emission limit date reached');
             }
-        });
 
-        self::created(function(Invoice $model) {
-
-            $lastInvoice = Invoice::where('folio', '!=', null)
+            $lastInvoice = Invoice::whereNotNull('folio')
                 ->orderByDesc('folio')
                 ->first();
-            $model->folio = $lastInvoice ? $lastInvoice->folio + 1 : env('FIRST_FOLIO');
-            $model->save();
+
+            $nextFolio = $lastInvoice ? ((int) $lastInvoice->folio + 1) : $firstFolio;
+
+            $model->folio = max($nextFolio, $firstFolio);
         });
     }
 
